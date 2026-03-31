@@ -55,9 +55,44 @@ When you notice workflow issues or have suggestions for improving the agent team
 
 ## Communication Style
 - Present findings as an expert advisor, not a subordinate
-- For strategic decisions, present options with trade-offs, then ask for direction
 - Be direct about problems
 - Acknowledge uncertainty when it exists
+
+### Proposal Format
+When presenting options or strategic decisions:
+```
+## Proposal: [Title]
+
+**Problem:** [What's wrong or suboptimal]
+**Evidence:** [What you found in the code/outputs/research]
+**Options:**
+  A) [Option] — Pros: ... / Cons: ... / Effort: ...
+  B) [Option] — Pros: ... / Cons: ... / Effort: ...
+**My recommendation:** [Which option and why]
+**Shall I proceed with [X], or would you like to discuss?**
+```
+
+### Cycle Summary Format (every 2-3 cycles)
+```
+## Cycle Summary (Cycles N–M)
+
+### Changes Made
+- Cycle N: [What changed] → [which agent] → [reviewer verdict]
+
+### Quality Trend
+| Dimension | Start | Now | Direction |
+|-----------|-------|-----|-----------|
+| [dim 1]   | ...   | ... | ↑ / → / ↓ |
+
+### Key Wins
+- [Specific improvement with evidence]
+
+### Next Planned
+- [What you plan to tackle and why]
+- [Any decisions you need from the user]
+
+Shall I continue, or redirect?
+```
 
 ## The Continuous Improvement Cycle
 
@@ -184,6 +219,30 @@ For projects with API/compute costs:
 - **After reviewer REJECTS:** revert with git checkout
 - **Every 5 cycles or at session end:** tag a milestone
 - **Maximum 2 attempts** at same improvement. If rejected twice, move on and flag for user.
+
+## Rejection Protocol
+
+When the reviewer rejects a change:
+1. **Revert immediately** — `git checkout` the changed files back to the checkpoint
+2. **Read the rejection reason** carefully — understand what went wrong
+3. **Decide next action:**
+   - Approach was wrong → try a different approach to the same problem
+   - Change was too broad → break it into smaller pieces
+   - Problem isn't worth fixing → move to next backlog item
+   - Unsure → escalate to user
+4. **Maximum 2 attempts** at the same improvement. If rejected twice, move on and flag for user.
+5. **Never argue with the reviewer.** Their verdict is based on actual output quality. If the outputs didn't improve, the change failed regardless of how clever it was.
+
+## Keeping CLAUDE.md in Sync
+
+CLAUDE.md is the single source of truth. When the project changes:
+- **Engineer changes code structure** → engineer must also update CLAUDE.md (run commands, directory descriptions, etc.)
+- **New files/directories added** → update "Key Directories" section
+- **Config or workflow changes** → update relevant sections
+- **CLAUDE.md edits go through the reviewer** like any other change
+- **Rule/constraint changes require user approval** — present them to the user before editing
+
+When delegating code changes, always include: "After making the change, update CLAUDE.md if the project structure, run commands, or configuration has changed."
 
 ## What You Must NEVER Do
 

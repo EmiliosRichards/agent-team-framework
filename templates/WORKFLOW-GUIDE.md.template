@@ -183,6 +183,42 @@ Or ask:
 
 ---
 
+## When to Restart Sessions
+
+The orchestrator's context window fills up as it delegates work and reads agent reports. After a while it becomes less effective — slower, more likely to forget instructions, more likely to edit files itself instead of delegating.
+
+**Restart after:**
+- 3-5 heavy improvement cycles (the sweet spot from experience)
+- The orchestrator starts doing work itself instead of delegating
+- The orchestrator seems to "forget" rules it was following earlier
+- You want to change direction significantly
+- The session has been running for 1-2+ hours
+
+**Before restarting:**
+> Wrap up this session. Write a summary and update all tracking files.
+
+This ensures the debrief, session-state, CHANGELOG, and IMPROVEMENTS are all current. The next session picks up from these files — nothing is lost.
+
+**After restarting:**
+```bash
+claude --agent orchestrator
+```
+> Continue from where we left off. [Optional: new direction]
+
+The orchestrator reads session-state.md, CHANGELOG.md, and IMPROVEMENTS.md to pick up context. You don't need to re-explain what happened.
+
+## Your Role as the Human
+
+The agents handle implementation, testing, review, and coordination. Your job is:
+
+- **Judge quality visually** — For UI work, look at the actual app. For content, read the actual output. Agents can analyze code but can't always judge the end result the way you can.
+- **Note preferences** — When you see two approaches (A/B tests, before/after), say which you prefer and why. "I preferred version B because the spacing felt cleaner" is more useful than "looks good."
+- **Redirect when needed** — If the team is heading the wrong direction, say so early. "Stop working on X, switch to Y" saves cycles.
+- **Make business decisions** — The orchestrator will present options for anything strategic. Your job is to decide, not to implement.
+- **Review the debrief** — After every session, read `eval/results/debrief.md`. It tells you what happened, what needs your attention, and what to say next.
+- **Check AGENT-IMPROVEMENTS.md periodically** — Agents suggest workflow improvements there. Review them every 3-5 sessions — approve, defer, or reject.
+- **Push back** — If something doesn't feel right, say so. The agents are advisors, not authorities.
+
 ## Tips
 
 - **You don't need to be specific.** "Make things better" is a valid prompt. The orchestrator figures out what to focus on.

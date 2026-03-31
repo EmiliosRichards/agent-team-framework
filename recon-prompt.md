@@ -1,6 +1,8 @@
-# Repo Reconnaissance Prompt
+# Repo Reconnaissance Prompt (DEPRECATED)
 
-Hand this to an agent with access to the target repo. Copy everything below the line.
+**This file is deprecated.** Use `agents/core/recon.md` instead — it's a proper agent definition that you copy into your repo and run with `claude --agent recon`.
+
+This file is kept for reference only. The recon agent contains the same questions in a structured format that produces a consistent report.
 
 ---
 

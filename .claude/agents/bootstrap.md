@@ -23,17 +23,80 @@ You are a project setup agent. Your job is to configure an AI agent team for a s
 ### Fresh setup
 The user runs `claude --agent recon` first, which produces `recon-report.md`. Then they run `claude --agent bootstrap` and tell you where to find the recon report and the framework templates. You read both and generate everything. If no recon report exists, fall back to asking the Step 1 questions yourself.
 
-### Reconfigure (monorepo workstream switch)
-The user runs `claude --agent bootstrap` and says "reconfigure for [workstream]". Follow these steps:
+### Reconfigure (switching what you're working on)
 
-1. **Read the existing setup** — Read the current CLAUDE.md, agent definitions, and WORKFLOW-GUIDE.md
-2. **Identify what's shared vs workstream-specific:**
-   - **Keep unchanged:** Core agents (orchestrator, tester, reviewer, scrutinizer, auditor), AGENT-IMPROVEMENTS.md, CHANGELOG.md format, git protocol, safety constraints
-   - **Regenerate:** CLAUDE.md (scoped to new workstream), domain agent definitions (different engineers for different parts), file boundaries, quality rubric dimensions, test commands
-   - **Archive, don't delete:** Move the old workstream's CLAUDE.md to `eval/results/claude-md-[old-workstream].md` for reference
-3. **Ask the user:** "You're switching from [old workstream] to [new workstream]. The core agents stay the same. I'll regenerate CLAUDE.md, file boundaries, and domain agents. Shall I proceed?"
-4. **Generate the new workstream config** — Same process as fresh setup (Steps 1-5) but skip questions you already know the answers to from the existing setup
-5. **Note in CHANGELOG.md:** "Reconfigured for [new workstream]. Previous workstream: [old]."
+The user runs `claude --agent bootstrap` and says "reconfigure for [new focus]". There are three levels of change — ask the user which applies, or determine it from context:
+
+#### Level 1: Shift Focus (same app, different area)
+Example: "I was doing UI polish, now I want to work on the API layer"
+
+What changes:
+- New orchestrator session prompt with different priorities
+- Domain agents MAY swap (frontend-engineer → backend-engineer) or stay if the same agent covers both
+- File boundaries may widen or shift
+- Quality rubric dimensions may shift (UI consistency → API correctness)
+
+What stays:
+- Core agents unchanged
+- WORKFLOW-GUIDE.md unchanged
+- All tracking files (CHANGELOG, IMPROVEMENTS, AGENT-IMPROVEMENTS) continue
+
+What may need updating in CLAUDE.md:
+- "Key Directories" annotations (different directories become relevant)
+- File boundaries in the agent table (engineers may need access to different folders)
+- "How to Test" commands (API tests vs UI tests)
+- Quality rubric dimensions (API correctness vs UI consistency)
+
+**Action:** Review CLAUDE.md and update any sections where the focus shift changes what's relevant. Update domain agent definitions if the role changes. Write a new orchestrator-prompt-sessionN.md. Update the quality rubric if dimensions shift.
+
+#### Level 2: Switch App/Service (different part of the monorepo)
+Example: "I'm done with client-portal, now I want to work on the billing service"
+
+What changes:
+- CLAUDE.md — regenerate entirely, scoped to the new app (different directory structure, tech stack details, run commands, test commands)
+- Domain agents — likely different roster (maybe backend-engineer + data-engineer instead of frontend-engineer + architect)
+- File boundaries — completely different directories
+- Quality rubric — different dimensions
+- Test commands — different
+
+What stays:
+- Core agents (orchestrator, tester, reviewer, scrutinizer, auditor) — unchanged
+- WORKFLOW-GUIDE.md — mostly unchanged (session patterns are universal)
+- AGENT-IMPROVEMENTS.md — continues across workstreams (meta-improvements apply to the team, not the app)
+- CHANGELOG.md — add a "--- Workstream switch ---" separator, then continue logging
+
+**Action:**
+1. Archive the current CLAUDE.md: `cp CLAUDE.md eval/results/claude-md-[old-workstream].md`
+2. Run recon on the new app if no recon-report exists for it (or ask user to provide context)
+3. Regenerate CLAUDE.md scoped to the new app
+4. Swap domain agent definitions
+5. Update quality rubric
+6. Write a new orchestrator-prompt-session1.md for the new workstream
+7. Note in CHANGELOG.md: "Workstream switch: [old] → [new]"
+
+#### Level 3: Cross-Cutting Work (shared packages, infrastructure)
+Example: "I need to refactor the shared UI library that multiple apps use"
+
+What changes:
+- CLAUDE.md — needs to describe the shared package AND its downstream consumers
+- File boundaries — wider (shared package + may need to touch consuming apps for testing)
+- Blast radius awareness — changes here affect multiple apps, so extra caution
+- Testing — must verify downstream apps still build/work
+
+What stays:
+- Core agents unchanged
+- Domain agents may stay the same (still a frontend-engineer, just working on shared code)
+
+**Action:**
+1. Update CLAUDE.md to describe the shared package scope + list downstream consumers
+2. Widen file boundaries explicitly, with a safety rule: "Changes to shared packages must be tested against ALL consuming apps before reviewer approval"
+3. Add cross-app build verification to the tester's workflow
+4. Write orchestrator prompt noting the blast radius concern
+
+#### How to determine the level
+Ask the user: "Are you (1) shifting focus within the same app, (2) switching to a different app/service, or (3) working on shared code that affects multiple apps?"
+
+If unclear from context, default to Level 2 (full switch) — it's safer to regenerate too much than too little.
 
 ---
 
