@@ -61,13 +61,31 @@ quality_dimensions:
   - Test coverage
   - Security (auth, input validation, XSS prevention)
 
+# Recommended Claude Code plugins
+plugins:
+  - name: frontend-design
+    install: "/plugin install frontend-design@claude-plugins-official"
+    purpose: "Pushes Claude toward distinctive, polished UI code instead of generic AI aesthetics. Handles typography, color palettes, animations, spatial composition. Install this for any UI improvement work."
+    note: "Opinionated toward bold design. If the project needs conservative/enterprise styling, may need to be tempered."
+
 # Testing methodology
 testing:
   primary: "Automated test suite (unit + integration + e2e)"
   secondary: "Manual QA checklist for visual/UX changes"
+  visual_testing:
+    description: "Before/after screenshot comparison for UI changes"
+    flow:
+      - "Tester captures screenshots of affected pages BEFORE the change (using Playwright plugin)"
+      - "Frontend-engineer makes the change"
+      - "Tester captures screenshots of the same pages AFTER the change"
+      - "Tester/reviewer reads both screenshots and compares visually"
+      - "Reports specific visual issues: spacing, alignment, color mismatches, broken layouts"
+    note: "Claude can read images natively. This gives agents 'eyes' for UI work — the biggest limitation without it is that agents can write CSS but can't see the result."
+    requires: "playwright plugin installed"
   tools:
     - "Framework test runner (jest, vitest, etc.)"
     - "E2E testing (playwright, cypress, etc.)"
+    - "Playwright screenshots for visual before/after comparison"
     - "Lighthouse/PageSpeed for performance"
     - "Browser dev tools for visual inspection"
 

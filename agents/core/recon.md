@@ -93,8 +93,12 @@ Save to `recon-report.md` in the project root. Use this structure:
 [Shared packages, cross-dependencies, build workflow — skip if not a monorepo]
 
 ## 11. Recommended Agent Roster
-Based on what I found, I'd suggest these agents:
-[Your recommendation — which archetype, which agents, why]
+The following 5 core agents are ALWAYS included (don't list these as recommendations, they're mandatory):
+- orchestrator, tester, reviewer, scrutinizer, auditor
+
+Based on what I found, I'd suggest these ADDITIONAL domain agents:
+[Your recommendation — which domain/engineering agents, why, and whether any need custom definitions]
+Total team size: 5 core + [N] domain = [total] agents
 
 ## 12. Suggested First Priorities
 Based on the user's goals and what I observed:

@@ -130,6 +130,16 @@ Framework → Bootstrap → Project → Improvement cycles
     ← contribute-back ← review ← apply ←──┘
 ```
 
+## Plugin Integration
+
+The framework works alongside Claude Code plugins. See **[docs/plugin-guide.md](docs/plugin-guide.md)** for:
+- How to research and evaluate plugins
+- Which plugins conflict with the agent framework (and why)
+- Recommended plugin sets by project type
+- How to document installed plugins in CLAUDE.md
+
+**Key rule:** Plugins with their own orchestration (Superpowers, feature-dev, ralph-loop) conflict with our orchestrator. Pure tools (playwright, github, LSPs) complement it.
+
 ## Key Principles
 
 1. **Strict separation of concerns** — Each agent can only modify specific files/directories

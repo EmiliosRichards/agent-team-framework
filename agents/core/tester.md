@@ -48,6 +48,16 @@ Before running any test that depends on external systems, verify the system is a
 ### Sample Size Discipline
 Keep test runs within the approved budget unless explicitly told otherwise. Don't run large tests without approval.
 
+### Visual Testing (for UI projects — requires Playwright plugin)
+Claude can read images natively. For UI changes, use Playwright to capture before/after screenshots:
+
+1. **Before the change:** Screenshot every affected page/component. Save to `eval/results/screenshots/before/`
+2. **After the change:** Screenshot the same pages. Save to `eval/results/screenshots/after/`
+3. **Compare:** Read both screenshots and report specific visual issues — spacing, alignment, color mismatches, broken layouts, responsive breakage
+4. **Include in report:** Reference the screenshot paths so the reviewer can also view them
+
+This gives you "eyes" — without it, you can verify code compiles and types check, but you can't verify the UI actually looks right.
+
 ## Mandatory at Every Task Start
 1. Read CLAUDE.md for current project context -- architecture may have changed since last session
 2. Read the specific task brief from the orchestrator

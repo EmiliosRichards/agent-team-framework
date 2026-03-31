@@ -64,6 +64,13 @@ This project is maintained by a team of {{AGENT_COUNT}} specialised agents coord
 - {{DECISION 1 — what was decided and why}}
 - {{DECISION 2}}
 
+## Installed Plugins
+<!-- Bootstrap: List installed plugins and how agents should interact with them -->
+<!-- Passive (auto-active): frontend-design, security-guidance, context7 -->
+<!-- Tool (agents use explicitly): playwright (tester for visual checks), figma (frontend-engineer for design files) -->
+<!-- Workflow (use outside orchestrator sessions): feature-dev for one-off features, code-review for quick PR reviews -->
+<!-- Overlap note: Don't use feature-dev or code-review DURING orchestrator cycles — they have their own agent flows that conflict -->
+
 ## Agent Safety Constraints
 
 ### Hard Boundaries (NEVER violate)

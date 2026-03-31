@@ -111,12 +111,27 @@ Use `templates/CLAUDE.md.template` as the structure. Fill in:
 
 ### Agent Frontmatter Rules
 Every generated agent definition MUST include frontmatter with:
-- `model`: opus for complex reasoning (orchestrator, reviewer, scrutinizer, auditor, analyst), sonnet for execution (tester, engineers)
-- `tools`: Explicit list of allowed tools. Tester gets no Write/Edit on source code. Reviewer gets read-only. Engineers get Write/Edit only on their directories.
-- `memory`: Always `project`
-- `maxTurns`: Set generously — maxTurns is a ceiling, not a target. Unused turns don't cost anything. The orchestrator uses turn budget hints in briefs to help agents pace themselves.
+
+**`model` — start lean, upgrade when needed:**
+
+| Role | Default | Upgrade to opus when... |
+|---|---|---|
+| Orchestrator | opus | Always opus — strategic decisions, delegation quality |
+| Reviewer | opus | Always opus — judgment calls, quality assessment |
+| Scrutinizer | opus | Always opus — deep analysis, challenging assumptions |
+| Auditor | opus | Always opus — meta-reasoning about agent effectiveness |
+| Analyst | opus | Always opus — pattern finding, strategic recommendations |
+| Architect | opus | Always opus — design decisions require deep reasoning |
+| Tester | sonnet | Tests require complex judgment (visual comparison, nuanced quality assessment) |
+| Engineers | sonnet | Implementation requires architectural decisions or complex refactoring across many files |
+
+Sonnet is significantly cheaper and faster. Use it for execution-heavy agents (writing code, running tests, applying known patterns). Use opus for judgment-heavy agents (reviewing quality, making strategic decisions, challenging assumptions). If a sonnet agent keeps making poor decisions, bump it to opus — but try sonnet first.
+
+- **`tools`**: Explicit list of allowed tools. Tester gets no Write/Edit on source code. Reviewer gets read-only. Engineers get Write/Edit only on their directories.
+- **`memory`**: Always `project`
+- **`maxTurns`**: Set generously — maxTurns is a ceiling, not a target. Unused turns don't cost anything. The orchestrator uses turn budget hints in briefs to help agents pace themselves.
   - Orchestrator: 50 (manages full sessions with multiple delegations)
-  - Tester: 50 (pipeline runs on 20-50 items + report writing needs room)
+  - Tester: 50 (pipeline/test runs + report writing needs room)
   - Analyst: 30 (large dataset analysis + pattern finding)
   - Reviewer: 25 (reads diffs, outputs, writes verdict)
   - Engineers: 25-35 (implementation + testing + report)
@@ -200,6 +215,29 @@ If the project is a monorepo:
    - The workstream's agents must NOT modify other apps/services
    - Shared infrastructure changes require explicit user approval
 4. **Note the monorepo context in agent definitions** — agents need to know they're in a monorepo and what's in/out of scope
+
+## Step 4b: Document Installed Plugins
+
+Check what plugins are installed (`/plugin` → Installed tab) and add a section to CLAUDE.md:
+
+```markdown
+## Installed Plugins
+<!-- List each plugin with: name, what it does, how agents should use it -->
+```
+
+For each plugin, note:
+- **Passive plugins** (frontend-design, security-guidance, context7): Just note they're active. No agent action needed — they improve output automatically.
+- **Tool plugins** (playwright, figma): Note which agents should use them and when. E.g., "Tester: use playwright for visual verification of UI changes."
+- **Workflow plugins** (commit-commands, feature-dev, code-review): Note when to use them vs the agent workflow. E.g., "Use `/commit` for quick commits. Use feature-dev for one-off features outside the orchestrator cycle. Don't use feature-dev during orchestrator sessions."
+
+Recommended plugins for app development projects:
+```
+/plugin install frontend-design@claude-plugins-official   # Better UI code
+/plugin install security-guidance@claude-plugins-official  # Vulnerability scanning
+/plugin install context7@claude-plugins-official           # Real library docs
+/plugin install commit-commands@claude-plugins-official     # Quick git workflows
+/plugin install playwright@claude-plugins-official          # Browser automation for testing
+```
 
 ## Step 5: Write First Orchestrator Prompt
 
