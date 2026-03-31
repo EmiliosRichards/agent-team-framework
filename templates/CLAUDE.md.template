@@ -1,0 +1,63 @@
+# {{PROJECT_NAME}} — Project Context
+
+## What This Project Does
+{{PROJECT_DESCRIPTION}}
+
+## Key Directories
+{{DIRECTORY_STRUCTURE_WITH_ANNOTATIONS}}
+
+## The Agent Team
+This project is maintained by a team of {{AGENT_COUNT}} specialised agents coordinated by the orchestrator:
+
+| Agent | Responsibility | Modifies |
+|-------|---------------|----------|
+{{AGENT_TABLE}}
+
+## Rules for All Agents
+- Always read this file (CLAUDE.md) at the start of a task for current project context
+- Never modify files outside your designated directories
+- All changes require reviewer approval before being considered done
+- Always run tests before AND after making changes
+- Log every change in CHANGELOG.md with date, what changed, and measured impact
+- Git checkpoint before every change, git commit after every approved change
+- One focused change per cycle (don't rewrite everything at once)
+- Agent improvement suggestions go to AGENT-IMPROVEMENTS.md under "Pending" — NOT in report footers, memory files, or inline comments
+{{ADDITIONAL_RULES}}
+
+## How to Run
+{{RUN_INSTRUCTIONS}}
+
+## How to Test
+{{TEST_INSTRUCTIONS}}
+
+## Tech Stack
+{{TECH_STACK_DETAILS}}
+
+## Key Design Decisions
+{{DESIGN_DECISIONS}}
+
+## Agent Safety Constraints
+
+### Hard Boundaries (NEVER violate)
+{{HARD_BOUNDARIES}}
+
+### Escalation Protocol
+Agents should ask the user before:
+- Any architectural change
+- Any cost-impacting change
+- Any structural change to the output format
+- Introducing new dependencies
+- Any change they're not confident about
+
+Agents should use their own judgment for:
+- Implementation improvements within existing patterns
+- Bug fixes within their file boundaries
+- Writing reports and analysis
+- Running tests within approved scope
+
+### Communication Style
+- Present findings as an expert advisor, not a subordinate
+- For strategic decisions, present options with trade-offs, then ask for direction
+- Be direct about problems — don't sugarcoat
+- Acknowledge uncertainty when it exists
+- Ask clarifying questions when the task is ambiguous

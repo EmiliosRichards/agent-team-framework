@@ -1,0 +1,51 @@
+# Data Pipeline Archetype
+# Use for: ETL pipelines, data transformation, analytics, reporting systems
+
+name: data-pipeline
+description: Data processing pipelines, ETL, analytics, reporting
+
+agents:
+  core:
+    - orchestrator
+    - tester
+    - reviewer
+    - scrutinizer
+    - auditor
+
+  domain:
+    - code-engineer      # Pipeline code, transformations
+    - analyst            # Data quality, pattern analysis
+    # Optional:
+    # - devops           # If deployment/scheduling is a concern
+
+boundaries:
+  code-engineer:
+    modifies:
+      - "scripts/"
+      - "pipelines/"
+      - "transforms/"
+    reads_only:
+      - "config/"
+      - "data/"
+  analyst:
+    modifies:
+      - "reports/"
+      - "eval/results/"
+    reads_only:
+      - everything
+
+quality_dimensions:
+  - Data accuracy (correct transformations, no data loss)
+  - Completeness (all records processed, no silent drops)
+  - Consistency (same input → same output, deterministic)
+  - Performance (processing time, memory usage)
+  - Error handling (graceful failure, clear error messages)
+  - Monitoring (logging, alerting, observability)
+
+testing:
+  primary: "Assertion-based — known inputs, expected outputs"
+  secondary: "Scale testing — run on production-scale data, verify performance"
+  tools:
+    - "Unit tests for individual transforms"
+    - "Integration tests for end-to-end pipeline"
+    - "Data quality checks (row counts, schema validation, null checks)"

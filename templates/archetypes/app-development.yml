@@ -1,0 +1,80 @@
+# App Development Archetype
+# Use for: web apps, mobile apps, desktop apps, SaaS products
+
+name: app-development
+description: Full-stack or frontend/backend application development
+
+# Agent roster for this archetype
+agents:
+  core:  # Always included
+    - orchestrator
+    - tester
+    - reviewer
+    - scrutinizer
+    - auditor
+
+  domain:  # Select based on project specifics
+    # If frontend-heavy or frontend-only:
+    - frontend-engineer
+    # If backend-heavy or backend-only:
+    - backend-engineer
+    # If both frontend + backend:
+    # Include both, OR use a single code-engineer if tightly coupled
+    # If needs architectural work:
+    - architect
+
+# Typical file boundaries
+boundaries:
+  frontend-engineer:
+    modifies:
+      - "app/(pages)/"
+      - "components/"
+      - "styles/"
+      - "public/"
+    reads_only:
+      - "lib/"
+      - "app/api/"
+  backend-engineer:
+    modifies:
+      - "app/api/"
+      - "lib/"
+      - "prisma/"
+      - "server/"
+    reads_only:
+      - "components/"
+      - "app/(pages)/"
+  architect:
+    modifies:
+      - "docs/"
+      - "eval/results/"
+    reads_only:
+      - everything
+
+# Quality rubric dimensions for this archetype
+quality_dimensions:
+  - UI consistency and responsiveness
+  - Code quality and type safety
+  - Performance (load times, bundle size, rendering)
+  - Error handling and edge cases
+  - Accessibility (a11y)
+  - User experience flow
+  - Test coverage
+  - Security (auth, input validation, XSS prevention)
+
+# Testing methodology
+testing:
+  primary: "Automated test suite (unit + integration + e2e)"
+  secondary: "Manual QA checklist for visual/UX changes"
+  tools:
+    - "Framework test runner (jest, vitest, etc.)"
+    - "E2E testing (playwright, cypress, etc.)"
+    - "Lighthouse/PageSpeed for performance"
+    - "Browser dev tools for visual inspection"
+
+# Session patterns
+session_patterns:
+  quick_fix: "Fix specific bug → test → review → commit"
+  feature: "Design → implement → test → review → commit"
+  refactor: "Architect proposes → engineer implements → test → review"
+  ui_polish: "Screenshot current state → implement improvements → compare before/after → review"
+  exploration: "Scrutinizer analyses codebase → presents findings → user decides direction"

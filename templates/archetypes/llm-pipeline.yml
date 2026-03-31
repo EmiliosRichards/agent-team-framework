@@ -1,0 +1,60 @@
+# LLM Pipeline Archetype
+# Use for: RAG systems, classification pipelines, content generation, prompt-driven workflows
+# This is what the Dexter project uses.
+
+name: llm-pipeline
+description: Pipeline that processes data through LLM prompts with structured outputs
+
+agents:
+  core:
+    - orchestrator
+    - tester
+    - reviewer
+    - scrutinizer
+    - auditor
+
+  domain:
+    - prompt-engineer    # Edits LLM prompts only
+    - code-engineer      # Edits pipeline scripts only
+    - analyst            # Deep-dives into outputs, finds patterns
+
+boundaries:
+  prompt-engineer:
+    modifies:
+      - "prompts/"
+    reads_only:
+      - everything
+  code-engineer:
+    modifies:
+      - "scripts/"
+    reads_only:
+      - everything
+  analyst:
+    modifies:
+      - "eval/results/"
+    reads_only:
+      - everything
+
+quality_dimensions:
+  - Output accuracy (classification, extraction, generation)
+  - Output naturalness (language quality, tone)
+  - Consistency across runs (same input → same output)
+  - Edge case handling (sparse data, adversarial inputs)
+  - Product accuracy (no hallucinations)
+  - Batch variety (outputs don't all sound the same)
+  - Safety (DNC, exclusion handling, ethical integrity)
+
+testing:
+  primary: "Observation-driven — run pipeline on samples, write observations"
+  secondary: "A/B testing for prompt variants"
+  tools:
+    - "Pipeline scripts with --run flag"
+    - "Regression set (fixed contacts for breakage detection)"
+    - "Blind test set (unseen contacts for honest quality)"
+    - "A/B comparison docs"
+
+session_patterns:
+  improvement_cycle: "Tester runs → analyst finds patterns → prompt-engineer fixes → reviewer approves"
+  ab_test: "Create prompt variant → run both → build comparison doc → user reviews"
+  scrutiny: "Scrutinizer challenges scores/approach → team addresses findings"
+  scale_test: "Run on larger sample → scan for systemic issues"
