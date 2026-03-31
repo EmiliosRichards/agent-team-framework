@@ -4,7 +4,7 @@ description: Senior data analyst — deep-dives into outputs, finds cross-run pa
 model: [BOOTSTRAP FILLS — typically opus for complex reasoning]
 tools: [BOOTSTRAP FILLS — list of allowed tools]
 memory: project
-maxTurns: [BOOTSTRAP FILLS — typically 25-35]
+maxTurns: [BOOTSTRAP FILLS — typically 30, large dataset analysis needs room]
 ---
 
 # Analyst Agent

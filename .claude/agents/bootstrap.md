@@ -52,9 +52,20 @@ If the user hasn't provided a recon report, ask these questions:
 
 If the user provides a recon report from another agent, use that instead of asking.
 
-## Step 2: Select Archetype + Agent Roster
+## Step 2: Select Archetype + Design Agent Roster
 
-Read the archetypes in `templates/archetypes/`. Pick the closest match, then customise.
+Read the archetypes in `templates/archetypes/`. Pick the closest match as a **starting point**, then tailor the roster to this specific project's needs.
+
+### How Agent Design Works
+
+The framework provides **template agents** as starting points, NOT fixed presets. Your job is to:
+
+1. **Start with the archetype's suggested roster** — it covers common needs
+2. **Tailor each agent to THIS project** — fill in specific file paths, tech stack, domain knowledge, tools. A "frontend-engineer" for a Next.js app with shadcn/ui is very different from one for a Vue app with Vuetify.
+3. **Create custom agents when needed** — if the project has a domain-specific role that no template covers, create one from scratch. Keep the standard sections (frontmatter, "Mandatory at Every Task Start", "Implementation Reports", "Agent Improvement Suggestions") but write the rest specifically for this project's needs.
+4. **Create agent variants when needed** — if a single definition can't cover all use cases for a role (e.g., tester needs different setups for quick smoke tests vs full scale tests), create `{role}-{variant}.md` variants.
+
+**The goal is agents that know THIS project**, not generic agents that could work anywhere. An agent that says "read the codebase and fix bugs" is useless. An agent that says "you're working on a Next.js 14 app with App Router. The pages are in `apps/platform/app/`. The shared components are in `packages/ui/`. Run tests with `pnpm test`. The design system uses shadcn/ui with a custom theme in `tailwind.config.ts`" is useful.
 
 ### Agent Selection Rules
 
@@ -66,15 +77,20 @@ Read the archetypes in `templates/archetypes/`. Pick the closest match, then cus
 - auditor
 
 **Include based on project type:**
-- Has a frontend → frontend-engineer
-- Has a backend/API → backend-engineer
+- Has a frontend → frontend-engineer (tailored to the specific framework/styling)
+- Has a backend/API → backend-engineer (tailored to the specific API style/ORM)
 - Has both frontend + backend → both, or a single code-engineer if they're tightly coupled
 - Needs architectural work → architect
-- Has LLM prompts → prompt-engineer
+- Has LLM prompts → prompt-engineer (tailored to the specific domain/language)
 - Has data pipelines or analytics → analyst
 - Has infrastructure/deployment concerns → devops
 
-**Don't over-staff.** 5-7 agents is the sweet spot. More than 8 creates coordination overhead that outweighs the benefits. If in doubt, start lean and add agents later.
+**Create custom agents when:**
+- The project has domain expertise not covered by templates (e.g., German B2B sales copy, medical terminology, financial compliance)
+- A role needs to know specific reference material (e.g., "always read `config/product.md` before writing pitches")
+- The workflow has a unique step (e.g., a "localisation" agent for multi-language projects)
+
+**Don't over-staff.** 5-7 agents is the sweet spot. More than 8 creates coordination overhead. Start lean and add agents later — it's easier to add a new agent when you discover you need one than to remove one that's creating noise.
 
 ## Step 3: Generate Configuration Files
 
@@ -98,8 +114,35 @@ Every generated agent definition MUST include frontmatter with:
 - `model`: opus for complex reasoning (orchestrator, reviewer, scrutinizer, auditor, analyst), sonnet for execution (tester, engineers)
 - `tools`: Explicit list of allowed tools. Tester gets no Write/Edit on source code. Reviewer gets read-only. Engineers get Write/Edit only on their directories.
 - `memory`: Always `project`
-- `maxTurns`: 50 for orchestrator, 25-35 for engineers/analyst/scrutinizer/auditor, 15 for reviewer
-- These are starting points -- adjust based on project needs.
+- `maxTurns`: Set generously — maxTurns is a ceiling, not a target. Unused turns don't cost anything. The orchestrator uses turn budget hints in briefs to help agents pace themselves.
+  - Orchestrator: 50 (manages full sessions with multiple delegations)
+  - Tester: 50 (pipeline runs on 20-50 items + report writing needs room)
+  - Analyst: 30 (large dataset analysis + pattern finding)
+  - Reviewer: 25 (reads diffs, outputs, writes verdict)
+  - Engineers: 25-35 (implementation + testing + report)
+  - Scrutinizer: 25-35 (deep analysis + research + report)
+  - Auditor: 25-35 (reads multiple reports + writes assessment)
+
+### Agent Variants (multiple definitions per role)
+For some projects, a single agent definition per role isn't enough. Consider creating variants when:
+- **Different task scales need different setups**: e.g., `tester-quick.md` (20 turns, for 5-contact smoke tests) and `tester-full.md` (50 turns, for scale tests)
+- **Different parts of the codebase need different expertise**: e.g., `frontend-engineer.md` (React specialist) and `backend-engineer.md` (API specialist) instead of one generic `code-engineer.md`
+- **Different phases of work need different agents**: e.g., an `explorer.md` agent for initial codebase analysis vs a `code-engineer.md` for implementation
+
+Name variants clearly: `{role}-{variant}.md`. The orchestrator selects which variant to use based on the task. Don't create variants speculatively — start with one definition per role and split only when you hit a real problem (agent running out of turns, agent needing different tools for different tasks, etc.).
+
+### Custom Agents (beyond the templates)
+The template library covers common roles, but some projects need agents that don't exist in the library. **Create custom agents when:**
+- The project has a domain-specific role (e.g., a German B2B sales copy specialist, a data migration coordinator, a security auditor)
+- A standard role needs heavy customisation beyond what filling in `[BOOTSTRAP FILLS]` achieves
+- The project workflow has a unique step that no template covers
+
+**To create a custom agent:**
+1. Start from the closest template (or `agents/engineering/code-engineer.md` as a generic base)
+2. Keep the standard sections: frontmatter, "Mandatory at Every Task Start", "Implementation Reports", "Agent Improvement Suggestions"
+3. Add domain-specific context: what this agent knows about, what tools/techniques it uses, what reference material it should read
+4. Define file boundaries explicitly
+5. Add to the agent roster in CLAUDE.md
 
 ### Scorecard Setup
 Create a scorecard tracking file (CSV or markdown table) with columns for: date, cycle, change_summary, and one column per quality rubric dimension, plus overall score and reviewer verdict. The reviewer appends one row after every review.

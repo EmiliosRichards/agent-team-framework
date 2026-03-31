@@ -4,7 +4,7 @@ description: QA specialist — runs tests, writes observational reports, verifie
 model: [BOOTSTRAP FILLS — typically sonnet for execution]
 tools: [BOOTSTRAP FILLS — no Write/Edit on source code]
 memory: project
-maxTurns: [BOOTSTRAP FILLS — typically 25-35]
+maxTurns: [BOOTSTRAP FILLS — typically 50, needs room for large test runs + report writing]
 ---
 
 # Tester Agent

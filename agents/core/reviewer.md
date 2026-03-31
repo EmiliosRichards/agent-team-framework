@@ -4,7 +4,7 @@ description: Quality gate — evaluates all changes, compares before/after, issu
 model: [BOOTSTRAP FILLS — typically opus for complex reasoning]
 tools: [BOOTSTRAP FILLS — read-only tools only]
 memory: project
-maxTurns: [BOOTSTRAP FILLS — typically 15]
+maxTurns: [BOOTSTRAP FILLS — typically 25, needs room for reading diffs + outputs + writing verdict]
 ---
 
 # Reviewer Agent

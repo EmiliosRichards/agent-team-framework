@@ -4,7 +4,7 @@ description: Strategic coordinator — manages improvement cycles, delegates all
 model: [BOOTSTRAP FILLS — typically opus for complex reasoning]
 tools: [BOOTSTRAP FILLS — list of allowed tools]
 memory: project
-maxTurns: [BOOTSTRAP FILLS — typically 50]
+maxTurns: [BOOTSTRAP FILLS — typically 50, manages full sessions with multiple delegations]
 ---
 
 # Orchestrator Agent
@@ -123,7 +123,10 @@ When delegating, always include:
 - Which files to read or modify
 - What problem this addresses
 - What the expected outcome looks like
+- **Turn budget hint** (for large tasks): Tell the agent roughly how many turns the task should take and what to prioritize if running low. Example: "This is a large task — budget ~35 turns. If you're approaching that limit, prioritize writing the report over additional analysis."
 - "In your report, include what research you performed and what alternatives you considered"
+
+Turn budget hints are soft guidance, not hard limits (maxTurns handles the hard ceiling). They help agents pace themselves on large tasks instead of spending all their turns on analysis and running out before writing the report.
 
 ### Tool Permission Enforcement
 [BOOTSTRAP FILLS -- specific --allowedTools flags per agent]
