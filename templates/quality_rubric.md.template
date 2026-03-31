@@ -1,0 +1,82 @@
+# Quality Rubric — {{PROJECT_NAME}}
+
+This is a **living document**. The orchestrator updates it after each cycle as the team learns what works and what doesn't. This is not a set of examples to copy — it is criteria to judge against.
+
+Last updated: {{DATE}}
+
+---
+
+## How to Use This File
+
+- **Reviewer**: Score outputs against these criteria. Flag when a criterion is met or violated.
+- **Analyst**: Use these criteria to structure your findings. Propose new criteria or retire weak ones.
+- **Orchestrator**: After each cycle, check whether the rubric needs updating based on what was learned. Add open questions. Remove resolved ones.
+
+---
+
+## Scoring Rules
+
+- The **regression test set** is for **breakage detection** — not quality benchmarking. Scores on regression cases are informational but may be inflated by overfitting.
+- Use the full 1-10 range with decimals for precision.
+- 1-2: Broken, unusable. 3-4: Poor, significant issues. 5-6: Acceptable, works but weak. 7-8: Good, minor issues. 9: Very good. 10: Exceptional.
+- **Score honestly.** If quality is 6.5, say 6.5 — don't round up to make progress look better.
+
+---
+
+## Quality Dimensions
+
+<!-- Bootstrap: Fill in project-specific quality dimensions. Examples below for different project types. -->
+
+<!-- === For an App Project === -->
+<!-- ### UI Consistency -->
+<!-- Are components used consistently? Same spacing, colors, typography across pages? -->
+<!--  -->
+<!-- ### Responsiveness -->
+<!-- Does the app work well on mobile, tablet, and desktop? -->
+<!--  -->
+<!-- ### Performance -->
+<!-- Load times, bundle size, rendering performance. Lighthouse scores. -->
+<!--  -->
+<!-- ### Code Quality -->
+<!-- Type safety, error handling, consistent patterns, no dead code. -->
+<!--  -->
+<!-- ### User Experience -->
+<!-- Are flows intuitive? Loading states present? Error states handled gracefully? -->
+<!--  -->
+<!-- ### Accessibility -->
+<!-- Keyboard navigation, screen reader support, color contrast, ARIA labels. -->
+<!--  -->
+<!-- ### Test Coverage -->
+<!-- Are critical paths tested? Are edge cases covered? -->
+
+<!-- === For an LLM Pipeline === -->
+<!-- ### Output Accuracy -->
+<!-- Does the system produce correct results? -->
+<!--  -->
+<!-- ### Output Quality -->
+<!-- Is the generated text natural, specific, and useful? -->
+<!--  -->
+<!-- ### Consistency -->
+<!-- Same input → same quality output across runs? -->
+<!--  -->
+<!-- ### Safety -->
+<!-- Are dangerous edge cases (DNC, exclusions) handled correctly? -->
+<!--  -->
+<!-- ### Batch Variety -->
+<!-- Do multiple outputs avoid being formulaic? -->
+
+---
+
+## Open Research Questions
+
+<!-- Questions the team should investigate. Mark as RESOLVED when answered. -->
+
+_None yet — the team will add questions as they discover unknowns._
+
+---
+
+## Retired Criteria
+
+<!-- Criteria that were once tracked but are no longer relevant. Keep for history. -->
+
+_None yet._

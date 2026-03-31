@@ -75,7 +75,18 @@ As you explore the codebase, note:
 - Missing error handling or loading states
 - Anything that looks fragile or likely to break
 
-## 8. Monorepo Context (if applicable)
+## 8. User Pain Points (ask the user these — don't guess)
+
+Before writing your report, ask the user:
+1. What frustrates you most about working on this codebase?
+2. What breaks most often?
+3. What do users/customers complain about?
+4. Is there anything you've been wanting to fix but haven't had time for?
+5. Are there any areas of the code you're afraid to touch?
+
+Include their answers verbatim in the report — this context is often more valuable than automated code analysis.
+
+## 9. Monorepo Context (if applicable)
 - What shared packages exist? Which ones does the focused app import?
 - Are there shared UI components across apps?
 - Is there a shared database or do apps have separate databases?

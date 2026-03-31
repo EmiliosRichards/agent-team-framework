@@ -1,0 +1,32 @@
+{
+  "// TEMPLATE": "Bootstrap fills in project-specific paths. This file goes to .claude/settings.json",
+  "// PURPOSE": "Pre-approves safe operations so agents don't trigger permission prompts on every file write. Deny rules block dangerous operations regardless of agent flags.",
+
+  "permissions": {
+    "allow": [
+      "Read **/*",
+      "Glob **/*",
+      "Grep **/*",
+      "Edit {{SAFE_EDIT_DIRS}}",
+      "Write {{SAFE_WRITE_DIRS}}",
+      "Bash(git *)",
+      "Bash({{TEST_COMMAND}})",
+      "Bash({{BUILD_COMMAND}})",
+      "Bash({{DEV_COMMAND}})"
+    ],
+    "deny": [
+      "Write {{PRODUCTION_DIRS}}",
+      "Edit {{PRODUCTION_DIRS}}",
+      "Write .env*",
+      "Write **/*.key",
+      "Write **/*.pem",
+      "Bash(rm -rf *)",
+      "Bash(git push --force*)",
+      "Bash(git reset --hard*)",
+      "Bash(git checkout -- .)",
+      "Bash(drop *)",
+      "Bash(DELETE *)",
+      "Bash(TRUNCATE *)"
+    ]
+  }
+}

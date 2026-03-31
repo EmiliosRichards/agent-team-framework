@@ -1,17 +1,25 @@
 # {{PROJECT_NAME}} — Project Context
 
 ## What This Project Does
-{{PROJECT_DESCRIPTION}}
+{{PROJECT_DESCRIPTION — 2-3 sentences: what it does, who it's for, what problem it solves}}
 
 ## Key Directories
-{{DIRECTORY_STRUCTURE_WITH_ANNOTATIONS}}
+<!-- Bootstrap: List every important directory with a one-line annotation. Be specific. -->
+- `{{DIR}}/` — {{what's in it, who modifies it}}
+- `eval/results/` — Output from test runs and agent reports (timestamped)
+- `eval/quality_rubric.md` — Evolving quality criteria (not static — updated as the team learns)
+- `CHANGELOG.md` — Record of all changes, which agent made them, and measured impact
+- `IMPROVEMENTS.md` — Prioritised backlog of improvement ideas (maintained by orchestrator)
+- `AGENT-IMPROVEMENTS.md` — Self-improvement suggestions from agents (reviewed by user)
+- `.claude/agents/` — Agent definition files. Modified only with user approval.
 
 ## The Agent Team
 This project is maintained by a team of {{AGENT_COUNT}} specialised agents coordinated by the orchestrator:
 
 | Agent | Responsibility | Modifies |
 |-------|---------------|----------|
-{{AGENT_TABLE}}
+| **orchestrator** | Strategy, research, coordination, delegation | CHANGELOG.md, IMPROVEMENTS.md |
+<!-- Bootstrap: Fill in one row per agent with specific directories -->
 
 ## Rules for All Agents
 - Always read this file (CLAUDE.md) at the start of a task for current project context
@@ -22,38 +30,67 @@ This project is maintained by a team of {{AGENT_COUNT}} specialised agents coord
 - Git checkpoint before every change, git commit after every approved change
 - One focused change per cycle (don't rewrite everything at once)
 - Agent improvement suggestions go to AGENT-IMPROVEMENTS.md under "Pending" — NOT in report footers, memory files, or inline comments
-{{ADDITIONAL_RULES}}
 
 ## How to Run
-{{RUN_INSTRUCTIONS}}
+<!-- Bootstrap: Exact commands to start/run the project. Not "run the app" — the actual commands. -->
+```bash
+{{DEV_SERVER_COMMAND}}
+{{BUILD_COMMAND}}
+```
 
 ## How to Test
-{{TEST_INSTRUCTIONS}}
+<!-- Bootstrap: Exact test commands + testing methodology. -->
+```bash
+{{TEST_COMMAND}}
+```
+
+**Regression test set:** `eval/regression_tests/` — {{N}} curated test cases for consistent before/after comparison. Always test against these for verification. Add new cases when edge cases are discovered.
+
+**Exploratory testing:** For discovering new issues, use random/diverse inputs beyond the regression set. Not for before/after comparison — for discovery only.
 
 ## Tech Stack
-{{TECH_STACK_DETAILS}}
+<!-- Bootstrap: Be specific. Not "React" — "Next.js 14.2 with App Router, React 19, TypeScript 5.4" -->
+- **Language:** {{LANGUAGE + VERSION}}
+- **Framework:** {{FRAMEWORK + VERSION + SPECIFIC CONFIG (e.g., App Router vs Pages Router)}}
+- **Styling:** {{CSS APPROACH — Tailwind, CSS Modules, styled-components, etc.}}
+- **Database:** {{DB + ORM/CLIENT}}
+- **Auth:** {{AUTH SOLUTION}}
+- **Deployment:** {{HOSTING + CI/CD}}
+- **Package manager:** {{NPM/PNPM/YARN/BUN}}
 
 ## Key Design Decisions
-{{DESIGN_DECISIONS}}
+<!-- Bootstrap: Decisions that have been made and shouldn't be relitigated without good reason. -->
+<!-- These accumulate over time as the team makes choices. Start with what's known. -->
+- {{DECISION 1 — what was decided and why}}
+- {{DECISION 2}}
 
 ## Agent Safety Constraints
 
 ### Hard Boundaries (NEVER violate)
-{{HARD_BOUNDARIES}}
+<!-- Bootstrap: What must NEVER happen. Be explicit. Examples below — adapt to project. -->
+- **Production data**: Never write to production directories or databases without explicit user approval
+- **Secrets**: Never commit .env files, API keys, credentials, or tokens
+- **Cost control**: Never add new API calls or external service integrations without user approval
+- **Dependencies**: Never add new dependencies without user approval
+- **Destructive operations**: Never drop databases, delete branches, force-push, or run destructive migrations without user approval
+- **Agent definitions**: Never modify files in `.claude/agents/` without user approval
+- **Git safety**: Always checkpoint (commit) before making changes. Always revert on reviewer rejection.
 
 ### Escalation Protocol
 Agents should ask the user before:
-- Any architectural change
-- Any cost-impacting change
-- Any structural change to the output format
+- Any architectural change (adding/removing system components)
+- Any cost-impacting change (new API calls, new services, model changes)
+- Any structural change (output format, database schema, API contracts)
 - Introducing new dependencies
 - Any change they're not confident about
 
 Agents should use their own judgment for:
 - Implementation improvements within existing patterns
 - Bug fixes within their file boundaries
+- Code style improvements in files they're already modifying
 - Writing reports and analysis
 - Running tests within approved scope
+- Adding error handling or edge-case protection
 
 ### Communication Style
 - Present findings as an expert advisor, not a subordinate
@@ -61,3 +98,4 @@ Agents should use their own judgment for:
 - Be direct about problems — don't sugarcoat
 - Acknowledge uncertainty when it exists
 - Ask clarifying questions when the task is ambiguous
+- When an agent's instructions feel unclear or incomplete, note it as a self-improvement suggestion in AGENT-IMPROVEMENTS.md

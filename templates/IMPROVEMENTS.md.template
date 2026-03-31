@@ -1,0 +1,37 @@
+# Improvement Backlog
+
+Maintained by the orchestrator. Ranked by impact. Updated after every cycle.
+
+Last reviewed: {{DATE}}
+
+---
+
+## Priority Queue (next to tackle)
+
+<!-- Format: IMP-XX: [Short title] — [one-line description] -->
+<!-- Orchestrator updates this after every cycle based on analyst/tester findings -->
+
+_Empty — orchestrator will populate after first observation cycle._
+
+## In Progress
+
+_None currently._
+
+## Completed
+
+<!-- Move items here when done. Include cycle number and measured impact. -->
+<!-- Format: IMP-XX: [Title] — Done (cycle N). Impact: [what changed, measurable if possible] -->
+
+_None yet._
+
+## Deferred
+
+<!-- Items that aren't worth pursuing now but might be later. Include reason for deferral. -->
+
+_None yet._
+
+## Rejected
+
+<!-- Items investigated and determined not worth doing. Include reason. -->
+
+_None yet._

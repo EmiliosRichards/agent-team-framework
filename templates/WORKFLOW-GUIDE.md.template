@@ -1,8 +1,13 @@
 # {{PROJECT_NAME}} — Workflow Guide
 
+A simple reference for working with your agent team.
+
+---
+
 ## Before Every Session
 
-{{PREREQUISITES}}
+<!-- Bootstrap: What needs to be running/available before starting -->
+{{PREREQUISITES — e.g., "Start the dev server", "Ensure DB is running", "Connect to VPN"}}
 
 ## Starting a Session
 
@@ -11,23 +16,87 @@ cd {{PROJECT_PATH}}
 claude --agent orchestrator
 ```
 
-Then provide the session prompt (from `eval/results/orchestrator-prompt-sessionN.md`) or give a direction:
+Then provide direction. You can be specific or vague — the orchestrator handles both:
 
 > [Your priorities for this session]
 
+Or just:
+
+> Go. Find what needs improving and improve it.
+
 ## Resuming After a Break
 
-Start a fresh orchestrator session and say:
+Same as above — start a fresh orchestrator session and say:
 
 > Continue from where we left off.
 
 The orchestrator reads CHANGELOG.md, IMPROVEMENTS.md, and recent reports to pick up context.
+
+If you want to redirect:
+
+> Continue from where we left off. Focus on {{specific area}} this session.
 
 ## Ending a Session
 
 Say:
 
 > Wrap up this session. Write a summary and update all tracking files.
+
+This ensures CHANGELOG.md, IMPROVEMENTS.md, and the debrief are current for next time.
+
+---
+
+## The Prompt Cookbook
+
+Pick a prompt based on what you want. From most open-ended to most specific.
+
+### "Take the wheel" — Full Autonomy
+
+> Go. Find what needs improving and improve it.
+
+> Run an improvement cycle. Use your judgment on what to tackle.
+
+> I have an hour. Make the {{project}} better. Check in with me at the end.
+
+> What's the single highest-impact thing we could improve right now? Investigate and fix it.
+
+### "Explore and advise" — Discovery Mode
+
+> Look at the {{project}} with fresh eyes. What are we doing wrong? What are we missing?
+
+> Have the scrutinizer challenge our entire approach. Is the architecture right?
+
+> Read the codebase and tell me honestly: what would you refactor first?
+
+> If you were rebuilding this from scratch, what would you do differently?
+
+### "Focus on {{AREA}}" — Targeted
+
+<!-- Bootstrap: Add 3-5 project-specific prompts per focus area. Examples: -->
+
+> The UI is inconsistent across pages. Fix the spacing, colours, and component usage.
+
+> The API error handling is weak. Audit all endpoints and add proper error responses.
+
+> Performance is slow on {{page}}. Profile it and fix the bottlenecks.
+
+> Run the test suite and fix any failures. Then add tests for {{untested area}}.
+
+### "Fix a specific issue" — Surgical
+
+> Fix {{specific bug description}}. The issue is in {{file/area}}.
+
+> Refactor {{component}} to use {{pattern}}. Don't change behavior, just structure.
+
+### "Review and status" — Check Progress
+
+> What have we changed so far? Show me the improvement trend.
+
+> Read the last 3 cycle summaries and give me an honest assessment: are we making progress?
+
+> What's in the backlog? Reprioritise based on what we've learned.
+
+> Have the reviewer do a thorough quality check on the current state.
 
 ---
 
@@ -38,39 +107,35 @@ Say:
 Start → "Fix [specific issue]" → Test → Review → Commit → Exit
 ```
 
-### Feature work (1-2 hours)
+### Deep work (1-2 hours)
 ```
-Start → "Implement [feature]. Priorities: 1. X  2. Y  3. Z"
-→ Delegate → Review check-ins → Test → Commit → Exit
+Start → "Run the improvement loop. Focus on [area]. Check in every 2 cycles."
+→ Review check-ins → Redirect if needed → "Wrap up" → Exit
 ```
 
 ### Exploration (30-60 min)
 ```
 Start → "I want ideas, not changes. Analyse [area] and tell me what's possible."
-→ Read proposals → Decide what to pursue → Exit
+→ Read proposals → Decide what to pursue next time → Exit
 ```
 
 ### Scrutiny (30-60 min)
 ```
-Start → "Have the scrutinizer challenge [our approach / recent changes / architecture]."
+Start → "Have the scrutinizer tear apart our approach."
 → Read findings → Discuss → Exit
-```
-
-### Self-directed improvement (1-2 hours)
-```
-Start → "Run 2-3 improvement cycles. Use your judgment. Produce comparison docs."
-→ Review outputs → Redirect if needed → Exit
 ```
 
 ---
 
-## Git Safety
+## Git — Checkpoints & Reverting
 
-The agents commit checkpoints automatically. You can also:
+The agents commit checkpoints automatically before and after changes. You can also use git directly:
 
 ```bash
-# See what changed
+# See what changed since last commit
 git diff
+
+# See recent history
 git log --oneline -10
 
 # Revert everything back to last commit
@@ -79,18 +144,51 @@ git checkout -- .
 # Revert a specific file
 git checkout -- path/to/file
 
-# See all tags
+# See all tags (milestones)
 git tag -l
 ```
+
+If something goes very wrong:
+
+> Revert all changes back to [commit hash or tag]. Start fresh from there.
+
+---
+
+## Quality Tracking
+
+The reviewer maintains a scorecard (CSV or table) that tracks quality dimensions over time. After every review cycle, one row is appended.
+
+Check the trend:
+```bash
+cat eval/results/scorecard.csv
+```
+
+Or ask the orchestrator:
+
+> Show me the quality trend for the last 5 cycles.
+
+---
+
+## Agent Self-Improvement
+
+Agents suggest workflow improvements via AGENT-IMPROVEMENTS.md. Review these periodically:
+
+```bash
+cat AGENT-IMPROVEMENTS.md
+```
+
+Or ask:
+
+> Review the pending agent improvement suggestions and present them to me.
 
 ---
 
 ## Tips
 
-- **Push back.** If the orchestrator proposes something you disagree with, say so.
+- **You don't need to be specific.** "Make things better" is a valid prompt. The orchestrator figures out what to focus on.
+- **Push back.** If the orchestrator proposes something you disagree with, say so. It'll adapt.
 - **Redirect mid-session.** "Stop working on X. Switch to Y." works fine.
-- **Ask why.** "Why did you choose that?" forces justification.
-- **Request the scrutinizer.** If things feel stale, say "have the scrutinizer challenge everything."
-- **Fresh sessions are fine.** After 3-5 heavy cycles, start fresh.
-
-{{ADDITIONAL_WORKFLOW_SECTIONS}}
+- **Ask why.** "Why did you choose to focus on that?" forces the orchestrator to justify priorities.
+- **Request the scrutinizer.** If things feel stale: "have the scrutinizer challenge everything we've done."
+- **Fresh sessions are fine.** After 3-4 heavy cycles, start fresh. The orchestrator picks up from files.
+- **Check the debrief.** After every session, read `eval/results/debrief.md` for what happened and what to do next.

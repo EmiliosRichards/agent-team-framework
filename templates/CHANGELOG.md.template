@@ -1,0 +1,16 @@
+# Changelog
+
+All changes made by the agent team, in reverse chronological order. Each entry records: what changed, which agent made it, which cycle, reviewer verdict, and measured impact.
+
+---
+
+<!-- Format for each entry: -->
+<!-- ## Cycle N — YYYY-MM-DD -->
+<!-- **Change:** [What was changed — be specific] -->
+<!-- **Agent:** [Which agent made the change] -->
+<!-- **Files:** [Which files were modified] -->
+<!-- **Reviewer:** [APPROVED / APPROVED WITH CONDITIONS / REJECTED] -->
+<!-- **Impact:** [Measurable result — "Classification accuracy improved from X to Y" or "N/A — first measurement"] -->
+<!-- **Notes:** [Any additional context] -->
+
+_No changes yet. The orchestrator will log entries here after each improvement cycle._
