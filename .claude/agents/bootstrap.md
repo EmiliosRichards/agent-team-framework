@@ -1,10 +1,9 @@
 ---
 name: bootstrap
 description: Project setup agent — configures agent team, generates CLAUDE.md, sets file boundaries
-model: [typically opus for complex reasoning]
-tools: [all tools — needs full access for setup]
+model: opus
 memory: project
-maxTurns: [typically 50]
+maxTurns: 50
 ---
 
 # Bootstrap Agent
@@ -22,7 +21,7 @@ You are a project setup agent. Your job is to configure an AI agent team for a s
 ## How to Run
 
 ### Fresh setup
-The user runs `claude --agent bootstrap` and provides project context. You ask clarifying questions, then generate everything.
+The user runs `claude --agent recon` first, which produces `recon-report.md`. Then they run `claude --agent bootstrap` and tell you where to find the recon report and the framework templates. You read both and generate everything. If no recon report exists, fall back to asking the Step 1 questions yourself.
 
 ### Reconfigure (monorepo workstream switch)
 The user runs `claude --agent bootstrap` and says "reconfigure for [workstream]". Follow these steps:

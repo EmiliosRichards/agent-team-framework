@@ -4,11 +4,61 @@ A reusable framework for setting up coordinated AI agent teams on any project. B
 
 ## Quick Start
 
-1. Copy this folder into your project repo (or keep it separate and reference it)
-2. Run the bootstrap agent: `claude --agent bootstrap`
-3. Answer the bootstrap's questions about your project
-4. The bootstrap generates your tailored CLAUDE.md, agent definitions, workflow guide, and tracking files
-5. Start your first session: `claude --agent orchestrator`
+### Step 1: Copy the setup agents into your project repo
+
+```bash
+mkdir -p your-repo/.claude/agents
+cp agent-team-framework/agents/core/recon.md your-repo/.claude/agents/
+cp agent-team-framework/.claude/agents/bootstrap.md your-repo/.claude/agents/
+```
+
+### Step 2: Run the recon agent
+
+```bash
+cd your-repo
+claude --agent recon
+```
+
+**What to say to the recon agent:**
+
+> Explore this codebase and produce a recon report. I want to focus on [specific app/area — e.g., "the main web app in apps/platform"]. My immediate goals are [e.g., "improving the UI — making it cleaner, more consistent, more polished"].
+
+The recon agent will explore autonomously, then ask you 5-7 questions about your pain points and frustrations. Answer honestly — this context shapes the entire setup. It writes `recon-report.md` when done.
+
+### Step 3: Run the bootstrap agent
+
+```bash
+claude --agent bootstrap
+```
+
+**What to say to the bootstrap agent:**
+
+> Read recon-report.md in the project root. The framework templates are at C:/Users/EmiliosRichards/Projects/agent-team-framework/. Set up the agent team for this project.
+
+The bootstrap will:
+1. Read the recon report
+2. Read the framework templates and archetypes
+3. Present a plan: archetype selection, agent roster, file boundaries
+4. **Wait for your approval** before generating anything
+5. Once approved: generate CLAUDE.md, agent definitions, WORKFLOW-GUIDE.md, tracking files, quality rubric, settings.json, and the first orchestrator prompt
+
+### Step 4: Start working
+
+```bash
+claude --agent orchestrator
+```
+
+**What to say to the orchestrator:**
+
+Give it a direction. Can be specific or vague:
+
+> Read orchestrator-prompt-session1.md (the bootstrap wrote this). Start there.
+
+Or just:
+
+> Focus on UI consistency. Make it cleaner, more polished, and visually consistent across pages. Check in with me every 2 cycles.
+
+From here on, you're in the normal improvement loop. See WORKFLOW-GUIDE.md for session patterns and prompt ideas.
 
 ## What You Get
 

@@ -129,7 +129,19 @@ When delegating, always include:
 [BOOTSTRAP FILLS -- specific --allowedTools flags per agent]
 
 ### Timeout Protection
-Wrap all subagent calls with timeouts. If a call times out:
+**Scale the timeout to match the task scope.** Don't use fixed timeouts — a small task and a large task need very different time budgets.
+
+**Timeout formula:** `timeout = base_time + (per_item_time × item_count)`
+
+| Task type | Base | Per-item scaling | Example |
+|-----------|------|-----------------|---------|
+| Running pipeline/tests on N items | 120s | +30s per item | 10 items = 7min, 50 items = 27min |
+| Analysing N outputs/files | 120s | +15s per item | 20 items = 7min |
+| Reviewing N changed files | 120s | +15s per file | 5 files = 3min |
+| Editing prompts/code (no scaling) | 300s | flat | Always 5min |
+| Scrutinizer/auditor (deep analysis) | 600s | flat | Always 10min |
+
+If a call times out:
 1. Retry once with a more focused prompt (narrow the scope)
 2. If it times out again, tell the user and move on
 3. NEVER do the timed-out agent's work yourself
