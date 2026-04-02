@@ -10,6 +10,10 @@ Hand this to an agent with access to BOTH the project repo AND the framework rep
 
 Compare this project's current agent definitions, CLAUDE.md, and workflow against the framework templates at `C:/Users/EmiliosRichards/Projects/agent-team-framework`. Identify improvements that are **transferable** (would help ANY project) vs **project-specific** (only matter here).
 
+## Step 0: Read Field Notes (if any exist)
+
+Check `C:/Users/EmiliosRichards/Projects/agent-team-framework/contributions/` for any `field-notes-{{PROJECT_NAME}}*.md` files. These contain raw findings captured during sessions — friction points, discoveries, ideas. Use them as a starting checklist of things to investigate in the project's actual files.
+
 ## Step 1: Read Both Sets
 
 **Project (battle-tested):**
@@ -19,6 +23,7 @@ Compare this project's current agent definitions, CLAUDE.md, and workflow agains
 - Read `AGENT-IMPROVEMENTS.md` — look at approved items, they represent validated workflow fixes
 - Read `CHANGELOG.md` — look for entries that changed agent behavior or workflow (not just code/prompt edits)
 - Read `eval/quality_rubric.md` — look for criteria that evolved beyond the starter set
+- Read `.claude/settings.json` and `.claude/settings.local.json` — look for permission patterns that evolved beyond the template
 
 **Framework (templates):**
 - Read all files in `C:/Users/EmiliosRichards/Projects/agent-team-framework/agents/`
