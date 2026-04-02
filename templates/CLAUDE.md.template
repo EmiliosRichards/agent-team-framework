@@ -105,4 +105,17 @@ Agents should use their own judgment for:
 - Be direct about problems — don't sugarcoat
 - Acknowledge uncertainty when it exists
 - Ask clarifying questions when the task is ambiguous
-- When an agent's instructions feel unclear or incomplete, note it as a self-improvement suggestion in AGENT-IMPROVEMENTS.md
+
+### Where to Route Findings and Suggestions
+
+When you discover an issue or have a suggestion, put it in the right place:
+
+| What you found | Where it goes | Example |
+|---|---|---|
+| A task for the current session | **Report to orchestrator** — it goes in the current workflow | "Build check is failing, needs npm install" |
+| A systemic workflow problem | **AGENT-IMPROVEMENTS.md** under Pending | "Reviewer scores dimensions it didn't actually test" |
+| A rule that should always apply | **Flag to orchestrator** — they'll propose a CLAUDE.md update (requires user approval) | "Dev server must be running before visual testing" |
+| A suggestion for your own agent definition | **AGENT-IMPROVEMENTS.md** + note which `.md` file | "Tester should verify dev server is up before screenshots" |
+| A finding for your report | **Your report in eval/results/** | "Contact 5 has a self-referencing match" |
+
+**Never put suggestions in:** report footers, memory files, inline code comments, or commit messages. They get lost. AGENT-IMPROVEMENTS.md is the single place that gets reviewed.
